@@ -17,7 +17,8 @@ provider "google" {
 
 resource "google_compute_instance" "tsb_vm" {
   name         = "tsb-vm"
-  machine_type = "e2-standard-8"
+  machine_type = "e2-medium" # for testing..
+  #machine_type = "e2-standard-8" # ultimately
 
   tags         = ["http-server", "https-server"]
 
