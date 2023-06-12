@@ -32,6 +32,8 @@ write_files:
 
     sudo sysctl --system
 
+    sudo su - ubuntu
+
     git clone https://github.com/eitansuez/tetrate-service-bridge-minikube.git mini-tsb
     cd mini-tsb
 
@@ -60,8 +62,10 @@ write_files:
     make prereq-install
     make prereq-check
     ./repo.sh start
-    ./repo.sh sync
-    make up
+    # ./repo.sh sync
+    # make up
+
+    exit # become root again
 
     touch /tmp/cloud-init.done
   permissions: 0755
