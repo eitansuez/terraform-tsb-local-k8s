@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "google" {
-  credentials = file("eitan-tetrate-9511fdb9bfa2.json")
+  credentials = file(var.credentials_filename)
 
   project = "eitan-tetrate"
   region  = "us-central1"
