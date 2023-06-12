@@ -4,70 +4,70 @@ package_update: true
 package_upgrade: true
 
 packages:
-  - git
-  - make
-  - jq
-  - docker.io
+- git
+- make
+- jq
+- docker.io
 
 users:
-  - default
-  - name: ubuntu
-    gecos: main user
-    lock_passwd: true
-    shell: /bin/bash
-    sudo: ALL=(ALL) NOPASSWD:ALL
-    groups: admin, docker
+- default
+- name: ubuntu
+  gecos: main user
+  lock_passwd: true
+  shell: /bin/bash
+  sudo: ALL=(ALL) NOPASSWD:ALL
+  groups: admin, docker
 
 write_files:
-  - path: /opt/bootstrap.sh
-    content: |
-      #!/bin/sh
-      
-      sudo tee -a /etc/sysctl.conf << EOF
+- path: /opt/bootstrap.sh
+  content: |
+    #!/bin/sh
+    
+    sudo tee -a /etc/sysctl.conf << EOF
 
-      fs.inotify.max_user_watches = 524288
-      fs.inotify.max_user_instances = 512
+    fs.inotify.max_user_watches = 524288
+    fs.inotify.max_user_instances = 512
 
-      EOF
+    EOF
 
-      sudo sysctl --system
+    sudo sysctl --system
 
-      git clone https://github.com/eitansuez/tetrate-service-bridge-minikube.git mini-tsb
-      # cd mini-tsb
+    git clone https://github.com/eitansuez/tetrate-service-bridge-minikube.git mini-tsb
+    cd mini-tsb
 
-      # cat << EOF > env.json
-      # {
-      #   "topology": "tsb-training",
-      #   "scenario": "main",
-      #   "tsb": {
-      #     "version": "1.6.2",
-      #     "istio_version": "1.15.7",
-      #     "tetrate_repo": {
-      #       "url": "containers.dl.tetrate.io",
-      #       "user": "${tsb_image_sync_username}",
-      #       "password": "${tsb_image_sync_apikey}"
-      #     },
-      #     "install_repo": {
-      #       "insecure_registry": true,
-      #       "url": "192.168.48.2:5000",
-      #       "user": "",
-      #       "password": ""
-      #     }
-      #   }
-      # }
-      # EOF
-      
-      # make prereq-install
-      # make prereq-check
-      # ./repo.sh start
-      # ./repo.sh sync
-      # make up
+    cat << EOF > env.json
+    {
+      "topology": "tsb-training",
+      "scenario": "main",
+      "tsb": {
+        "version": "1.6.2",
+        "istio_version": "1.15.7",
+        "tetrate_repo": {
+          "url": "containers.dl.tetrate.io",
+          "user": "${tsb_image_sync_username}",
+          "password": "${tsb_image_sync_apikey}"
+        },
+        "install_repo": {
+          "insecure_registry": true,
+          "url": "192.168.48.2:5000",
+          "user": "",
+          "password": ""
+        }
+      }
+    }
+    EOF
+    
+    make prereq-install
+    make prereq-check
+    ./repo.sh start
+    ./repo.sh sync
+    make up
 
-      touch /tmp/cloud-init.done
-    permissions: 0755
-  - path: /etc/sudoers.d/ubuntu
-    content: |
-      ubuntu ALL=(ALL) NOPASSWD:ALL
+    touch /tmp/cloud-init.done
+  permissions: 0755
+- path: /etc/sudoers.d/ubuntu
+  content: |
+    ubuntu ALL=(ALL) NOPASSWD:ALL
 
 runcmd:
-  - /opt/bootstrap.sh
+- /opt/bootstrap.sh
