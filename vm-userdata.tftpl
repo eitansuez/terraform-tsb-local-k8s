@@ -24,9 +24,26 @@ write_files:
     fs.inotify.max_user_watches = 524288
     fs.inotify.max_user_instances = 512
   append: true
+- path: /etc/sudoers.d/ubuntu
+  content: |
+    ubuntu ALL=(ALL) NOPASSWD:ALL
+- path: /etc/vim/vimrc
+  content: |
+    set tabstop=2 softtabstop=2 shiftwidth=2
+    set number expandtab ruler autoindent smartindent
+    syntax enable
+    filetype plugin indent on
+- path: /etc/inputrc
+  content: |
+    "\e[A": history-search-backward
+    "\e[B": history-search-forward
+  append: true
 - path: /opt/setup-tsb-local.sh
+  permissions: 0755
   content: |
     #!/bin/sh
+
+    sysctl --system
 
     cd /home/ubuntu
     git clone https://github.com/eitansuez/tetrate-service-bridge-minikube.git tsb-local
@@ -54,19 +71,14 @@ write_files:
     }
     EOF
     
-    make prereq-install
-    make prereq-check
-    ./repo.sh start
+    sudo su --command="cd ~/tsb-local && make prereq-install" - ubuntu
+    sudo su --command="cd ~/tsb-local && make prereq-check" - ubuntu
+    sudo su --command="cd ~/tsb-local && ./repo.sh start" - ubuntu
+
     # ./repo.sh sync
     # make up
 
     chown -R ubuntu:ubuntu /home/ubuntu/tsb-local
-
-    touch /tmp/cloud-init.done
-  permissions: 0755
-- path: /etc/sudoers.d/ubuntu
-  content: |
-    ubuntu ALL=(ALL) NOPASSWD:ALL
 
 runcmd:
 - /opt/setup-tsb-local.sh
