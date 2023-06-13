@@ -17,6 +17,8 @@ users:
   shell: /bin/bash
   sudo: ALL=(ALL) NOPASSWD:ALL
   groups: admin, docker
+  ssh_authorized_keys:
+  - ${pubkey}
 
 write_files:
 - path: /etc/sysctl.conf
