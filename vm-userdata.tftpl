@@ -19,23 +19,18 @@ users:
   groups: admin, docker
 
 write_files:
-- path: /opt/bootstrap.sh
+- path: /etc/sysctl.conf
   content: |
-    #!/bin/sh
-    
-    sudo tee -a /etc/sysctl.conf << EOF
-
     fs.inotify.max_user_watches = 524288
     fs.inotify.max_user_instances = 512
+  append: true
+- path: /opt/setup-tsb-local.sh
+  content: |
+    #!/bin/sh
 
-    EOF
-
-    sudo sysctl --system
-
-    sudo su - ubuntu
-
-    git clone https://github.com/eitansuez/tetrate-service-bridge-minikube.git mini-tsb
-    cd mini-tsb
+    cd /home/ubuntu
+    git clone https://github.com/eitansuez/tetrate-service-bridge-minikube.git tsb-local
+    cd tsb-local
 
     cat << EOF > env.json
     {
@@ -65,7 +60,7 @@ write_files:
     # ./repo.sh sync
     # make up
 
-    exit # become root again
+    chown -R ubuntu:ubuntu /home/ubuntu/tsb-local
 
     touch /tmp/cloud-init.done
   permissions: 0755
@@ -74,4 +69,4 @@ write_files:
     ubuntu ALL=(ALL) NOPASSWD:ALL
 
 runcmd:
-- /opt/bootstrap.sh
+- /opt/setup-tsb-local.sh
