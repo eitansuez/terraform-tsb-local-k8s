@@ -26,6 +26,11 @@ write_files:
     fs.inotify.max_user_watches = 524288
     fs.inotify.max_user_instances = 512
   append: true
+- path: /home/ubuntu/.bashrc
+  content: |
+    set -o vi
+    export EDITOR=vim
+  append: true
 - path: /etc/sudoers.d/ubuntu
   content: |
     ubuntu ALL=(ALL) NOPASSWD:ALL
