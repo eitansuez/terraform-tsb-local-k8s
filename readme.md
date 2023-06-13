@@ -13,7 +13,7 @@ The idea is to provision a TSB training environment.  `tsb-local-k8s` can do thi
 Create a `terraform.tfvars` file and in it, specify your service account key json file name, and your TSB image sync credentials.
 
 ```terraform
-credentials_filename = "my-service-account-key.json"
+credentials_filename = "~/.ssh/my-service-account-key.json"
 tsb_image_sync_username = "john-doe"
 tsb_image_sync_apikey = "0123456789abcedf0123456789abcdef01234567"
 ```
