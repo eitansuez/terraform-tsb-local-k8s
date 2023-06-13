@@ -5,3 +5,5 @@ eitan-tetrate-*.json
 terraform.tfstate
 terraform.tfstate.backup
 
+output/
+
