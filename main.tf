@@ -10,7 +10,7 @@ terraform {
 provider "google" {
   credentials = file(var.credentials_filename)
 
-  project = "eitan-tetrate"
+  project = var.gcp_project_name
   region  = "us-central1"
   zone    = "us-central1-a"
 }
