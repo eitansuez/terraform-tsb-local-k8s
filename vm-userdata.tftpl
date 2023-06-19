@@ -40,7 +40,7 @@ write_files:
     "\e[A": history-search-backward
     "\e[B": history-search-forward
   append: true
-- path: /opt/setup-tsb-local.sh
+- path: /opt/setup-tsb-single-vm.sh
   permissions: 0755
   content: |
     #!/bin/sh
@@ -48,8 +48,8 @@ write_files:
     sysctl --system
 
     cd /home/ubuntu
-    git clone https://github.com/boeboe/tetrate-service-bridge-minikube.git tsb-local
-    cd tsb-local
+    git clone https://github.com/tetratecx/tsb-single-vm
+    cd tsb-single-vm
 
     cat << EOF > env.json
     {
@@ -73,14 +73,14 @@ write_files:
     }
     EOF
     
-    sudo su --command="cd ~/tsb-local && make prereq-install" - ubuntu
-    sudo su --command="cd ~/tsb-local && make prereq-check" - ubuntu
-    sudo su --command="cd ~/tsb-local && ./repo.sh start" - ubuntu
+    sudo su --command="cd ~/tsb-single-vm && make prereq-install" - ubuntu
+    sudo su --command="cd ~/tsb-single-vm && make prereq-check" - ubuntu
+    sudo su --command="cd ~/tsb-single-vm && ./repo.sh start" - ubuntu
 
     # ./repo.sh sync
     # make up
 
-    chown -R ubuntu:ubuntu /home/ubuntu/tsb-local
+    chown -R ubuntu:ubuntu /home/ubuntu/tsb-single-vm
 
     cat << EOF >> /home/ubuntu/.bashrc
 
@@ -90,4 +90,4 @@ write_files:
     EOF
 
 runcmd:
-- /opt/setup-tsb-local.sh
+- /opt/setup-tsb-single-vm.sh
